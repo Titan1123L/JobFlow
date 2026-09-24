@@ -25,13 +25,17 @@ spring:
   jackson:
     time-zone: Asia/Kolkata
   datasource:
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:jobflow}?options=-c%20TimeZone=UTC
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT:5432}/${POSTGRES_DB:jobflow}?sslmode=require&options=-c%20TimeZone=UTC
     username: ${POSTGRES_USER:jobflow}
     password: ${POSTGRES_PASSWORD}
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      username: ${REDIS_USERNAME:default}
+      password: ${REDIS_PASSWORD}
+      ssl:
+        enabled: true
   jpa:
     hibernate:
       ddl-auto: update # (worker's says 'validate' - leave that as-is, don't change it)
@@ -41,10 +45,13 @@ spring:
         type:
           "[json_format_mapper]": jackson
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: ${RABBITMQ_USER:jobflow}
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT:5671}
+    username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
+    virtual-host: ${RABBITMQ_VHOST:/}
+    ssl:
+      enabled: true
     listener:
       simple:
         prefetch: 5 # matches "small prefetch count" from ARCHITECTURE.md
