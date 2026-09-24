@@ -1,0 +1,11 @@
+﻿.env
+.git
+.gitignore
+target/
+**/target/
+node_modules/
+dashboard/node_modules/
+dashboard/dist/
+next-app-backup/
+resized-images/
+*.log
