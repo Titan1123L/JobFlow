@@ -1,0 +1,51 @@
+server:
+  port: 8081
+
+jobflow:
+  storage:
+    resized-image-path:  ${RESIZED_IMAGE_STORAGE_PATH:E:/cs/Jobflow/resized-images}
+  retry:
+    initial-backoff-seconds: 5
+    multiplier: 6
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  application:
+    name: jobflow-worker
+  jackson:
+    time-zone: Asia/Kolkata
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:jobflow}?options=-c%20TimeZone=UTC
+    username: ${POSTGRES_USER:jobflow}
+    password: ${POSTGRES_PASSWORD}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: update # (worker's says 'validate' - leave that as-is, don't change it)
+    show-sql: true
+    properties:
+      hibernate:
+        type:
+          "[json_format_mapper]": jackson
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${RABBITMQ_USER:jobflow}
+    password: ${RABBITMQ_PASSWORD}
+    listener:
+      simple:
+        prefetch: 5 # matches "small prefetch count" from ARCHITECTURE.md
+        acknowledge-mode: manual

@@ -1,0 +1,25 @@
+# Secrets - never commit
+.env
+
+# Maven
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+# Generated image files
+resized-images/
+worker-service/resized-images/
+resized-test.png
+
+# Unused frontend folder
+next-app/

@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+jobflow:
+  storage:
+    resized-image-path:  ${RESIZED_IMAGE_STORAGE_PATH:E:/cs/Jobflow/resized-images}
+  security:
+    api-key: ${API_KEY}
+    jwt-secret: ${JWT_SECRET}
+    jwt-expiry-minutes: 120
+  rate-limit:
+    capacity: 20
+    refill-per-second: 1
+  scheduler:
+    poll-interval-seconds: 10
+
+app:
+  frontend-url: http://localhost:5173
+
+spring:
+  application:
+    name: jobflow-api
+  jackson:
+    time-zone: Asia/Kolkata
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:jobflow}?options=-c%20TimeZone=UTC
+    username: ${POSTGRES_USER:jobflow}
+    password: ${POSTGRES_PASSWORD}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${RABBITMQ_USER:jobflow}
+    password: ${RABBITMQ_PASSWORD}
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        type:
+          "[json_format_mapper]": jackson
+        format_sql: true
